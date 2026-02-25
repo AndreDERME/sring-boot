@@ -1,11 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.hibernate.sql.Delete;
+
+
 import org.springframework.stereotype.Service;
 
+import com.example.demo.exceptions.RecursoNaoEncontradoExceptions;
 import com.example.demo.model.Produto;
 import com.example.demo.repository.ProdutoRepository;
 
@@ -22,8 +23,9 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    public Optional<Produto> buscarId (Long Id) {
-        return produtoRepository.findById(Id);
+    public Produto buscarId (Long Id) {
+        return produtoRepository.findById(Id)
+            .orElseThrow(() -> new RecursoNaoEncontradoExceptions("Produto com o ID"+Id+"não encontrado" ));
     }
     
     public Produto salvarProduto (Produto produto) {
@@ -31,6 +33,10 @@ public class ProdutoService {
     }
 
     public void deletarProduto(Long id) {
+
+        if (!produtoRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoExceptions("Produto com ID"+id +"não encontrado");
+        }
          produtoRepository.deleteById(id);
     }
 }
