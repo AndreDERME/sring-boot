@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.sql.Delete;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Produto;
@@ -16,8 +18,19 @@ public class ProdutoService {
         this.produtoRepository =produtoRepository;
     }
 
-    public List <Produto> listaProdutos() {
+    public List<Produto> listaProdutos() {
         return produtoRepository.findAll();
     }
+
+    public Optional<Produto> buscarId (Long Id) {
+        return produtoRepository.findById(Id);
+    }
     
+    public Produto salvarProduto (Produto produto) {
+        return produtoRepository.save(produto); 
+    }
+
+    public void deletarProduto(Long id) {
+         produtoRepository.deleteById(id);
+    }
 }
