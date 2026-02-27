@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.exception.RecursoNaoEncontradoException;
+import com.example.demo.exceptions.RecursoNaoEncontradoExceptions;
 import com.example.demo.model.Produto;
 import com.example.demo.repository.ProdutoRepository;
 
@@ -19,7 +19,7 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    public Produto buscarId(long id) {
+    public Produto buscarId(Long id) {
         return produtoRepository.findById(id)
             .orElseThrow(() -> new RecursoNaoEncontradoException("Produto com ID "+id+" não encontrado."));
     }
