@@ -1,0 +1,35 @@
+package com.example.demo.service;
+
+import java.util.Optional;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Usuario;
+import com.example.demo.repository.UsuarioRepository;
+
+@Service
+public class UsuarioService {
+    
+    private final UsuarioRepository  usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioService (UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+
+    }
+
+    public Usuario registraUsuario(String username, String password) {
+        String senhaCrptografada = passwordEncoder.encode(password);
+        Usuario usuario = new Usuario(username, senhaCrptografada);  
+        return usuarioRepository.save(usuario);
+    }
+
+    public Optional<Usuario> buscarPorUsername(String username){
+        return usuarioRepository.findByUsername(username);
+    }
+
+
+}
